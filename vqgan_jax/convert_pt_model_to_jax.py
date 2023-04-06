@@ -137,6 +137,8 @@ def convert_pytorch_state_dict_to_flax(pt_state_dict, flax_model):
         # also add unexpected weight so that warning is thrown
         flax_state_dict[pt_tuple_key] = jnp.asarray(pt_tensor)
 
+    # TODO: remove this and just change code above
+    # definitely a way to do that but my tired brain doesn't want to do right now
     def fix_tuple(t):
         numerics = [i for i, v in enumerate(t) if v.isnumeric()]
         for ni in numerics[::-1]:
