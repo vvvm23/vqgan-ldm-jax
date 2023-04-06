@@ -2,3 +2,5 @@ transformers
 jax
 torch
 flax
+omegaconf
+pytorch-lightning
