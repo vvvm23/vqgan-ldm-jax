@@ -155,8 +155,8 @@ def convert_pytorch_state_dict_to_flax(pt_state_dict, flax_model):
     return unflatten_dict(flax_state_dict)
 
 
-def load_model(config: VQGANConfig, pt_state_dict_path: str):
-    model = VQModel(config)
+def load_model(config: VQGANConfig, pt_state_dict_path: str, dtype = jnp.float16):
+    model = VQModel(config, dtype=dtype)
 
     state_dict = torch.load(pt_state_dict_path, map_location="cpu")[
         "state_dict"]
@@ -173,7 +173,7 @@ def load_model(config: VQGANConfig, pt_state_dict_path: str):
     #model.save_pretrained(save_path)
     return model
 
-def load_and_download_model(name, base: str = 'vqgan-ckpt'):
+def load_and_download_model(name, base: str = 'vqgan-ckpt', dtype = jnp.float16):
     model_path = Path(base) / name / 'model.ckpt'
     config_path = Path(base) / name / 'config.yaml'
 
@@ -181,4 +181,4 @@ def load_and_download_model(name, base: str = 'vqgan-ckpt'):
     if not config_path.is_file(): download_config_yaml(name, base)
 
     config = load_config(config_path)
-    return load_model(config, model_path)
+    return load_model(config, model_path, dtype = dtype)
